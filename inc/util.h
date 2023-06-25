@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <cstdio>
+#include <string>
 
 #if defined(USE_ARGS)
 #define USE_ARGS
@@ -47,7 +47,7 @@ typedef struct CHECKSUM
 
 typedef struct FILE_TYPE
 {
-	static char CONSOLE_NAME[];
+	static char CONSOLE_NAME[16];
 	static char FILE_PATH;
 	typedef long FILE_SIZE;
 };
