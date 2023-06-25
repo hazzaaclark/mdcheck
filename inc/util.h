@@ -43,6 +43,7 @@ typedef struct CHECKSUM
 	typedef U32(*COMPUTE)();
 	typedef FILE* OPEN_FILE;
 	typedef void(*PRINT_SUM)(SUM_LENGTH);
+	typedef U32(*READ)();
 };
 
 typedef struct FILE_TYPE
