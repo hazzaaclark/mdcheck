@@ -49,6 +49,7 @@ typedef struct FILE_TYPE
 {
 	static char CONSOLE_NAME[];
 	static char FILE_PATH;
+	typedef long FILE_SIZE;
 };
 
 #endif
@@ -60,15 +61,13 @@ typedef struct FILE_TYPE
 
 #define BIT_LO                                    0
 #define BIT_HI                                    1
-
-#define BIT_SUM                     BIT_HI | BIT_LO
-
 #define NUM_BYTES                                 2
+#define BIT_SUM                     BIT_HI | BIT_LO
 
 typedef struct BIT
 {
 	typedef U32 BYTE_TO_INT();
-	typedef U32 WORD_TO_INIT();
+	typedef U32 WORD_TO_INT();
 	typedef U32 CHECKSUM_HEADER();
 	typedef U32 CONSOLE_HEADER();
 };
