@@ -75,5 +75,4 @@ typedef struct BIT
 #endif
 
 #endif
-
 #endif
