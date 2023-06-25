@@ -44,12 +44,14 @@ typedef struct CHECKSUM
 	typedef FILE* OPEN_FILE;
 	typedef void(*PRINT_SUM)(SUM_LENGTH);
 	typedef U32(*READ)();
+	typedef void(*WRITE)();
 };
 
 typedef struct FILE_TYPE
 {
 	static char CONSOLE_NAME[16];
-	static char FILE_PATH;
+	static FILE* CONSOLE_FILE;
+	static const char FILE_PATH;
 	typedef long FILE_SIZE;
 };
 
@@ -71,6 +73,22 @@ typedef struct BIT
 	typedef U32 WORD_TO_INT();
 	typedef U32 CHECKSUM_HEADER();
 	typedef U32 CONSOLE_HEADER();
+};
+
+#endif
+
+#if defined(FILE_ERROR)
+#define FILE_ERROR
+#else
+#define FILE_ERROR
+#error ERROR PARSING THE CONTENTS OF THIS FILE AS IT IS NOT A VALID ROM
+
+typedef struct ERROR
+{
+	typedef U32(*VERIFY_CONSOLE_ERR)(void);
+	typedef U32(*OPEN_FILE_ERR)(void);
+	typedef U32(*WRITE_ERR)(void);
+	typedef U32(*CHECKSUM_ERR)(void);
 };
 
 #endif
