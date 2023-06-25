@@ -65,6 +65,11 @@ static BIT::WORD_TO_INT* WORD_TO_INT(CHECKSUM::OPEN_FILE* OF)
 	return BIT_SUM;
 }
 
+static CHECKSUM::PRINT_SUM* PRINT_RESULT()
+{
+	printf("0x%0x4X", SUM_LENGTH);
+}
+
 #endif
 
 
@@ -73,5 +78,6 @@ int main(int argc, char** argv)
 	COMPUTE_CHECKSUM();
 	BYTE_TO_INT();
 	WORD_TO_INT();
+	PRINT_RESULT(COMPUTE_CHECKSUM);
 	return 0;
 }
