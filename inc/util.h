@@ -26,11 +26,14 @@
 #define USE_HEX_ARGS
 
 #define CHECK_INIT                                0
+#define CHECK_BYTES                               2
 #define CHECK_START_OFFSET                    0x200
 #define CHECK_HANDLE_OFFSET                   0x18E
 #define CHECK_MASK                            65535
-#define CHECK_BYTES                               2
+#define SEEK_SET                               0x00
+#define SEEK_END                               0x02
 #define BYTE_RANGE                            0x100
+#define CALCULATED_CHECKSUM                       0
 
 #define SUM_LENGTH                                \
 unsigned WORD
@@ -44,7 +47,30 @@ typedef struct CHECKSUM
 
 typedef struct FILE_TYPE
 {
-	typedef char CONSOLE_NAME;
+	static char CONSOLE_NAME[];
+	static char FILE_PATH;
+};
+
+#endif
+
+#if defined(BIT_ARGS)
+#define BIT_ARGS
+#else
+#define BIT_ARGS
+
+#define BIT_LO                                    0
+#define BIT_HI                                    1
+
+#define BIT_SUM                     BIT_HI | BIT_LO
+
+#define NUM_BYTES                                 2
+
+typedef struct BIT
+{
+	typedef U32 BYTE_TO_INT();
+	typedef U32 WORD_TO_INIT();
+	typedef U32 CHECKSUM_HEADER();
+	typedef U32 CONSOLE_HEADER();
 };
 
 #endif
