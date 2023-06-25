@@ -87,6 +87,12 @@ static BIT::CONSOLE_HEADER* VERIFY_CONSOLE(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::C
 	return 0;
 }
 
+static BIT::CHECKSUM_HEADER* READ_CHECKSUM_HEADER(CHECKSUM::OPEN_FILE* OF)
+{
+	fseek(OF, CHECK_HANDLE_OFFSET, SEEK_SET);
+	return WORD_TO_INT(OF);
+}
+
 static CHECKSUM::READ* READ_CONTENTS(CHECKSUM::OPEN_FILE* OF)
 {
 	fseek(OF, CHECK_HANDLE_OFFSET, SEEK_SET);
@@ -109,11 +115,44 @@ static CHECKSUM::PRINT_SUM* PRINT_RESULT()
 	printf("0x%0x4X", SUM_LENGTH);
 }
 
-#endif
+static ERROR::OPEN_FILE_ERR* OPEN_ERROR(FILE_TYPE->CONSOLE_FILE* CONSOLE)
+{
+	if (CONSOLE == NULL)
+	{
+		printf("Failed to open file: %s\n");
+		return 1;
+	}
+}
 
+static ERROR::VERIFY_CONSOLE_ERR* VERIFY_ERROR(FILE_TYPE->CONSOLE_FILE* CONSOLE)
+{
+	if (!VERIFY_CONSOLE())
+	{
+		FILE_ERROR;
+		fclose(FILE_TYPE::CONSOLE_FILE);
+		return 1;
+	}
+}
+
+#endif
 
 int main(int argc, char** argv)
 {
+	if (argc != 2)
+	{
+		printf("Usage: %s <path>\n", argv[0]);
+		return 1;
+	}
+
+	FILE_TYPE::CONSOLE_FILE = fopen("");
+	FILE_TYPE::FILE_PATH* PATH;
+	PATH = argv[1];
+	OPEN_ERROR();
+
+	printf("Reading Checksum IRQ from:\n");
+
+	VERIFY_ERROR();
+
 	COMPUTE_CHECKSUM();
 	BYTE_TO_INT();
 	WORD_TO_INT();
