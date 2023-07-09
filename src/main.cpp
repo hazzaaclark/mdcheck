@@ -18,7 +18,7 @@
 
 #ifdef USE_HEX_ARGS
 
-CHECKSUM::COMPUTE* COMPUTE_CHECKSUM(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::FILE_SIZE* FILE_SIZE)
+static CHECKSUM::COMPUTE* COMPUTE_CHECKSUM(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::FILE_SIZE* FILE_SIZE)
 {
     fseek(*OF, CHECK_START_OFFSET, SEEK_SET);
     fseek(*OF, 0, SEEK_END);
@@ -27,14 +27,13 @@ CHECKSUM::COMPUTE* COMPUTE_CHECKSUM(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::FILE_SIZ
 
     for (long C = CHECK_START_OFFSET; C < *FILE_SIZE; C += NUM_BYTES)
     {
-        SUM_LENGTH = WORD_TO_INT(OF);
-        CALCULATED_CHECKSUM = SUM_LENGTH;
+        SUM_LENGTH + 0, sizeof(WORD_TO_INT(OF));
     }
 
-    return CALCULATED_CHECKSUM & CHECK_MASK;
+    return;
 }
 
-#undef BIT_ARGS
+#ifdef BIT_ARGS
 
 /* ACCESS THE FILE'S CONTENTS AND CONVERT THOSE BYTEWISE VALUES TO INTS */
 /* READY TO BE PARSED */
@@ -43,9 +42,9 @@ CHECKSUM::COMPUTE* COMPUTE_CHECKSUM(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::FILE_SIZ
 
 /* SEE M68K VECTOR TABLE: https://wiki.neogeodev.org/index.php?title=68k_vector_table */
 
-BIT::BYTE_TO_INT* BYTE_TO_INT(CHECKSUM::OPEN_FILE* OF)
+static BIT::BYTE_TO_INT* BYTE_TO_INT(CHECKSUM::OPEN_FILE* OF)
 {
-    return fgetc(*OF);
+    fseek(*OF, CHECK_HANDLE_OFFSET, SEEK_SET);
 }
 
 /* IN ACCORDANCE WITH THE STATUS REGISTER ON THE M68K, THIS ALLOWS THE CARTRIDGE */
@@ -56,12 +55,18 @@ BIT::BYTE_TO_INT* BYTE_TO_INT(CHECKSUM::OPEN_FILE* OF)
 
 /* SEE FIGURE 2-5: https://www.nxp.com/docs/en/reference-manual/MC68000UM.pdf#page=21 */
 
-BIT::WORD_TO_INT* WORD_TO_INT(CHECKSUM::OPEN_FILE* OF)
+#ifdef BIT_ARGS
+
+static BIT::WORD_TO_INT* WORD_TO_INT(CHECKSUM::OPEN_FILE* OF)
 {
-    BIT_HI = BYTE_TO_INT(OF) << 8;
-    BIT_LO = BYTE_TO_INT(OF) & 0xFF;
-    return BIT_SUM;
+    calloc(1, sizeof(BIT_HI));
+    calloc(1, sizeof(BIT_LO));
+    calloc(1, sizeof(BIT_HI | BIT_LO));
+
+    RETURN_BIT_SUM();
 }
+
+#endif
 
 /* VERIFY WHICH CONSOLE THE .BIN OR .MD FILE REPRESENTS */
 /* THIS IS DETERMINED BY A STRING COMPARISON */
@@ -70,67 +75,67 @@ BIT::WORD_TO_INT* WORD_TO_INT(CHECKSUM::OPEN_FILE* OF)
 /* THAT GOVERNS THE VECTORS ESTABLISHED ON THE TABLE TO DETERMINE THE */
 /* CARTRIDGE REGION */
 
-BIT::CONSOLE_HEADER* VERIFY_CONSOLE(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::CONSOLE_NAME* CONSOLE)
+static BIT::CONSOLE_HEADER* VERIFY_CONSOLE(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::CONSOLE_NAME* CONSOLE)
 {
     fseek(*OF, BYTE_RANGE, SEEK_SET);
     fread(CONSOLE, sizeof(char), 15, *OF);
     CONSOLE[15] = '\0';
 
-    if (strcmp(*CONSOLE, "SEGA Mega Drive") == 0 || strcmp(*CONSOLE, "SEGA Genesis") == 0)
+    if (strcmp(CONSOLE, "SEGA Mega Drive") == 0 || strcmp(CONSOLE, "SEGA Genesis") == 0)
     {
-        return 1;
+        return;
     }
 
     return 0;
 }
-
-BIT::CHECKSUM_HEADER* READ_CHECKSUM_HEADER(CHECKSUM::OPEN_FILE* OF)
+static BIT::CHECKSUM_HEADER* READ_CHECKSUM_HEADER(CHECKSUM::OPEN_FILE* OF)
 {
     fseek(*OF, CHECK_HANDLE_OFFSET, SEEK_SET);
     return WORD_TO_INT(OF);
 }
 
-CHECKSUM::READ* READ_CONTENTS(CHECKSUM::OPEN_FILE* OF)
-{
-    fseek(*OF, CHECK_HANDLE_OFFSET, SEEK_SET);
-    return WORD_TO_INT(OF);
-}
-
-CHECKSUM::WRITE* WRITE_CONTENTS(CHECKSUM::OPEN_FILE* OF)
+static CHECKSUM::WRITE* WRITE_CONTENTS(CHECKSUM::OPEN_FILE* OF)
 {
     fseek(*OF, CHECK_HANDLE_OFFSET, SEEK_SET);
     fputc(BIT_HI, *OF);
     fputc(BIT_LO, *OF);
-    BIT_HI = CALCULATED_CHECKSUM >> 8 & 0xFF;
-    BIT_LO = CALCULATED_CHECKSUM & 0xFF;
+    calloc(BIT_HI, CALCULATED_CHECKSUM >> 8 & 0xFF);
+    calloc(BIT_LO, CALCULATED_CHECKSUM & 0xFF);
 
-    return BIT_SUM;
+    RETURN_BIT_SUM();
 }
 
-CHECKSUM::PRINT_SUM* PRINT_RESULT()
+static CHECKSUM::PRINT_SUM* PRINT_RESULT()
 {
-    printf("0x%0x4X", SUM_LENGTH);
+    printf("0x%0x4X", NULL, NULL);
 }
 
-ERROR::OPEN_FILE_ERR* OPEN_ERROR(FILE_TYPE::CONSOLE_FILE* CONSOLE)
+static ERROR::OPEN_FILE_ERR* OPEN_ERROR(FILE_TYPE::CONSOLE_FILE* CONSOLE)
 {
-    if (*CONSOLE == NULL)
+    if (CONSOLE == NULL)
     {
         printf("Failed to open file: %s\n");
-        return 1;
+        return;
     }
     return 0;
 }
 
-ERROR::VERIFY_CONSOLE_ERR* VERIFY_ERROR(FILE_TYPE::CONSOLE_FILE* CONSOLE)
+static ERROR::VERIFY_CONSOLE_ERR* VERIFY_ERROR(FILE_TYPE::CONSOLE_FILE* CONSOLE)
 {
-    if (!VERIFY_CONSOLE())
+    if (!VERIFY_CONSOLE)
     {
-        FILE_ERROR;
+        #undef FILE_ERROR;
         fclose(*CONSOLE);
-        return 1;
+        return;
     }
+
     return 0;
+}
+
+static BIT::RETURN_BIT_SUM* RETURN_BIT_SUM(void)
+{
+    BIT_HI | BIT_LO;
+    return;
 }
 
 #endif
@@ -143,32 +148,34 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    FILE_TYPE::CONSOLE_FILE = fopen(argv[1], "rb");
-    FILE_TYPE::FILE_PATH* PATH;
-    PATH = argv[1];
+    CHECKSUM::OPEN_FILE* OF;
+    FILE_TYPE::CONSOLE_FILE* CF;
+    FILE_TYPE::FILE_PATH PATH;
 
-    if (OPEN_ERROR(&FILE_TYPE::CONSOLE_FILE))
+    if (OPEN_ERROR)
     {
         return 1;
     }
 
     printf("Reading Checksum IRQ from:\n");
 
-    if (VERIFY_ERROR(&FILE_TYPE::CONSOLE_FILE))
+    if (VERIFY_ERROR)
     {
         return 1;
     }
 
     printf("Header Checksum = ");
-    HEADER_CHECKSUM = READ_CHECKSUM_HEADER(&FILE_TYPE::CONSOLE_FILE);
+    HEADER_CHECKSUM(CF, NULL);
     printf("\n");
 
-    COMPUTE_CHECKSUM(&FILE_TYPE::CONSOLE_FILE, &FILE_TYPE::FILE_SIZE);
-    BYTE_TO_INT(&FILE_TYPE::CONSOLE_FILE);
-    WORD_TO_INT(&FILE_TYPE::CONSOLE_FILE);
+    COMPUTE_CHECKSUM(CF, NULL);
+    BYTE_TO_INT(CF);
+    WORD_TO_INT(CF);
     PRINT_RESULT();
 
-    fclose(FILE_TYPE::CONSOLE_FILE);
+    fclose(*CF);
 
     return 0;
 }
+
+#endif
