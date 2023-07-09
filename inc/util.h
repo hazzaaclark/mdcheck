@@ -20,8 +20,8 @@
 #include <stdbool.h>
 #include <string>
 
-#if defined(USE_ARGS)
-#define USE_ARGS
+#if defined(USE_HEX_ARGS)
+#define USE_HEX_ARGS
 #else
 #define USE_HEX_ARGS
 
@@ -34,26 +34,27 @@
 #define SEEK_END                               0x02
 #define BYTE_RANGE                            0x100
 #define CALCULATED_CHECKSUM                       0
-
-#define SUM_LENGTH                                \
-unsigned WORD
+#define SUM_LENGTH                                
+#define HEADER_CHECKSUM                           0
 
 typedef struct CHECKSUM
 {
-	typedef U32(*COMPUTE)();
+	typedef U32 COMPUTE;
 	typedef FILE* OPEN_FILE;
-	typedef void(*PRINT_SUM)(SUM_LENGTH);
+	typedef void(*PRINT_SUM)();
 	typedef U32(*READ)();
 	typedef void(*WRITE)();
 };
 
 typedef struct FILE_TYPE
 {
-	static char CONSOLE_NAME[16];
-	static FILE* CONSOLE_FILE;
-	static const char FILE_PATH;
-	typedef long FILE_SIZE;
-};
+    static const U32 CONSOLE_NAME_LENGTH = 16;
+    typedef char CONSOLE_NAME;
+    typedef FILE* CONSOLE_FILE;
+    typedef char FILE_PATH;
+    typedef long FILE_SIZE;
+
+} FILE_TYPE;
 
 #endif
 
@@ -65,14 +66,14 @@ typedef struct FILE_TYPE
 #define BIT_LO                                    0
 #define BIT_HI                                    1
 #define NUM_BYTES                                 2
-#define BIT_SUM                     BIT_HI | BIT_LO
 
 typedef struct BIT
 {
-	typedef U32 BYTE_TO_INT();
+	typedef U32 BYTE_TO_INT;
 	typedef U32 WORD_TO_INT();
 	typedef U32 CHECKSUM_HEADER();
 	typedef U32 CONSOLE_HEADER();
+	typedef U32 (*RETURN_BIT_SUM)();
 };
 
 #endif
@@ -81,7 +82,6 @@ typedef struct BIT
 #define FILE_ERROR
 #else
 #define FILE_ERROR
-#error ERROR PARSING THE CONTENTS OF THIS FILE AS IT IS NOT A VALID ROM
 
 typedef struct ERROR
 {
@@ -93,5 +93,4 @@ typedef struct ERROR
 
 #endif
 
-#endif
 #endif
