@@ -14,8 +14,7 @@ in the process of transmission of storage and parsing of data.
 
 ### Michael Jackson's Moonwalker (Rev A).md
 
-![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/08a31949-7275-4589-bbc0-92491eb0bb03)
-
+![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/360b3750-74c1-4997-b8f0-3c65473c4692)
 
 # Sources:
 
