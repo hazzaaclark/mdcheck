@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string>
 
 #if defined(USE_HEX_ARGS)
 #define USE_HEX_ARGS
