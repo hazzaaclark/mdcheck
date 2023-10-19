@@ -8,29 +8,32 @@
 
 #include "util.h"
 
+#ifdef USE_HEX_ARGS
+
+static struct CHECKSUM* CHECKSUM;
+static struct FILE_TYPE* FILE_TYPE;
+static struct BIT* BIT_TYPE;
+
 /* COMPUTE THE CHECKSUM BY DETERMINING THE SOURCE OF THE FILE */
 /* THE ORIGIN IN WHICH THE OFFSET HEX VALUE EXISTS INSIDE OF
 /* THE BINARY OFFSET RELATIVE TO THE HANDLE */
 
-/* THE CHECKSUM IS DETERMINED BY THE VECTOR TABLE OF THE M68K */
-/* TO DETERMINE IF ANY IRQ'S HAVE TO BE CALLED TO DETECT */
-/* ILLEGAL OPERATIONS OR AN INACCESSIBLE CHUNK OF MEMORY */
-
 #ifdef USE_HEX_ARGS
 
-static CHECKSUM::COMPUTE* COMPUTE_CHECKSUM(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::FILE_SIZE* FILE_SIZE)
+static int COMPUTE_CHECKSUM()
 {
-    fseek(*OF, CHECK_START_OFFSET, SEEK_SET);
-    fseek(*OF, 0, SEEK_END);
+    fseek(CHECKSUM->OPEN_FILE, 1, sizeof(CHECK_START_OFFSET + sizeof(SEEK_SET)));
+    fseek(CHECKSUM->OPEN_FILE, 1, sizeof(SEEK_END));
 
-    *FILE_SIZE = ftell(*OF);
+    FILE_TYPE->FILE_SIZE += ftell(CHECKSUM->OPEN_FILE);
 
-    for (long C = CHECK_START_OFFSET; C < *FILE_SIZE; C += NUM_BYTES)
+    for (long OFFSET = CHECK_START_OFFSET; OFFSET <= FILE_TYPE->FILE_SIZE; OFFSET += NUM_BYTES)
     {
-        SUM_LENGTH + 0, sizeof(WORD_TO_INT(OF));
+        malloc(sizeof(BIT_TYPE->WORD_TO_INT));
+        return;
     }
 
-    return;
+    return 0;
 }
 
 #ifdef BIT_ARGS
@@ -157,7 +160,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    printf("Reading Checksum IRQ from:\n");
+    printf("Reading Checksum from file:\n");
 
     if (VERIFY_ERROR)
     {
@@ -177,5 +180,7 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+#endif
 
 #endif
