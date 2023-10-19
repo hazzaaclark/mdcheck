@@ -16,6 +16,13 @@ in the process of transmission of storage and parsing of data.
 
 ![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/360b3750-74c1-4997-b8f0-3c65473c4692)
 
+# Buidling:
+
+git clone this repository, change directory into the clone repo and compile from source:
+
+``gcc main.c -o main``
+``./main``
+
 # Sources:
 
 [M68K Vector Table](https://wiki.neogeodev.org/index.php?title=68k_vector_table)
