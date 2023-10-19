@@ -18,8 +18,6 @@ static struct BIT* BIT_TYPE;
 /* THE ORIGIN IN WHICH THE OFFSET HEX VALUE EXISTS INSIDE OF
 /* THE BINARY OFFSET RELATIVE TO THE HANDLE */
 
-#ifdef USE_HEX_ARGS
-
 static int COMPUTE_CHECKSUM()
 {
     fseek(CHECKSUM->OPEN_FILE, 1, sizeof(CHECK_START_OFFSET + sizeof(SEEK_SET)));
@@ -45,9 +43,12 @@ static int COMPUTE_CHECKSUM()
 
 /* SEE M68K VECTOR TABLE: https://wiki.neogeodev.org/index.php?title=68k_vector_table */
 
-static BIT::BYTE_TO_INT* BYTE_TO_INT(CHECKSUM::OPEN_FILE* OF)
+static int BYTE_TO_INT()
 {
-    fseek(*OF, CHECK_HANDLE_OFFSET, SEEK_SET);
+    fseek(CHECKSUM->OPEN_FILE, CHECK_HANDLE_OFFSET, SEEK_SET);
+
+    malloc(sizeof(BIT_TYPE->RETURN_BIT_SUM));
+    return;
 }
 
 /* IN ACCORDANCE WITH THE STATUS REGISTER ON THE M68K, THIS ALLOWS THE CARTRIDGE */
@@ -60,13 +61,14 @@ static BIT::BYTE_TO_INT* BYTE_TO_INT(CHECKSUM::OPEN_FILE* OF)
 
 #ifdef BIT_ARGS
 
-static BIT::WORD_TO_INT* WORD_TO_INT(CHECKSUM::OPEN_FILE* OF)
+static int WORD_TO_INT()
 {
     calloc(1, sizeof(BIT_HI));
     calloc(1, sizeof(BIT_LO));
     calloc(1, sizeof(BIT_HI | BIT_LO));
 
-    RETURN_BIT_SUM();
+    malloc(sizeof(BIT_TYPE->RETURN_BIT_SUM));
+    return;
 }
 
 #endif
@@ -135,9 +137,9 @@ static ERROR::VERIFY_CONSOLE_ERR* VERIFY_ERROR(FILE_TYPE::CONSOLE_FILE* CONSOLE)
     return 0;
 }
 
-static BIT::RETURN_BIT_SUM* RETURN_BIT_SUM(void)
+static int RETURN_BIT_SUM()
 {
-    BIT_HI | BIT_LO;
+    malloc(int*)(1, sizeof(BIT_HI | BIT_LO));
     return;
 }
 
@@ -180,7 +182,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
-#endif
 
 #endif
