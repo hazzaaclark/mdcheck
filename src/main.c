@@ -8,7 +8,7 @@
 
 #include "util.h"
 
-#ifdef USE_HEX_ARGS
+#undef USE_HEX_ARGS
 
 static struct CHECKSUM* CHECKSUM;
 static struct FILE_TYPE* FILE_TYPE;
@@ -47,7 +47,7 @@ static int BYTE_TO_INT()
 {
     fseek(CHECKSUM->OPEN_FILE, CHECK_HANDLE_OFFSET, SEEK_SET);
 
-    malloc(sizeof(BIT_TYPE->RETURN_BIT_SUM));
+    //malloc(sizeof(BIT_TYPE->RETURN_BIT_SUM));
     return;
 }
 
@@ -80,11 +80,13 @@ static int WORD_TO_INT()
 /* THAT GOVERNS THE VECTORS ESTABLISHED ON THE TABLE TO DETERMINE THE */
 /* CARTRIDGE REGION */
 
-static BIT::CONSOLE_HEADER* VERIFY_CONSOLE(CHECKSUM::OPEN_FILE* OF, FILE_TYPE::CONSOLE_NAME* CONSOLE)
+/* THIS WILL ALLOW US TO READ LEA TO DETERMINE THE BITWISE LENGTH OF THE CONSOLE HEADER */
+
+static int VERIFY_CONSOLE()
 {
-    fseek(*OF, BYTE_RANGE, SEEK_SET);
-    fread(CONSOLE, sizeof(char), 15, *OF);
-    CONSOLE[15] = '\0';
+    fseek(CHECKSUM->OPEN_FILE, 1, sizeof(BYTE_RANGE) + sizeof(SEEK_SET));
+    fread(&BIT_TYPE->CONSOLE_HEADER, 1, sizeof(char), CHECKSUM->OPEN_FILE);
+    BIT_TYPE->CONSOLE_HEADER[15] = '\0';
 
     if (strcmp(CONSOLE, "SEGA Mega Drive") == 0 || strcmp(CONSOLE, "SEGA Genesis") == 0)
     {
@@ -145,7 +147,7 @@ static int RETURN_BIT_SUM()
 
 #endif
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     if (argc != 2)
     {
@@ -168,17 +170,6 @@ int main(int argc, char** argv)
     {
         return 1;
     }
-
-    printf("Header Checksum = ");
-    HEADER_CHECKSUM(CF, NULL);
-    printf("\n");
-
-    COMPUTE_CHECKSUM(CF, NULL);
-    BYTE_TO_INT(CF);
-    WORD_TO_INT(CF);
-    PRINT_RESULT();
-
-    fclose(*CF);
 
     return 0;
 }
