@@ -35,23 +35,23 @@
 #define CALCULATED_CHECKSUM                       0
 #define SUM_LENGTH                                
 #define HEADER_CHECKSUM                           0
+#define CONSOLE_NAME_LENGTH 					 16
 
 typedef struct CHECKSUM
 {
-	typedef U32 COMPUTE;
-	typedef FILE* OPEN_FILE;
-	typedef void(*PRINT_SUM)();
-	typedef U32(*READ)();
-	typedef void(*WRITE)();
+	U32 COMPUTE;
+	FILE* OPEN_FILE;
+	void(*PRINT_SUM)();
+	U32 READ;
+	void(*WRITE)();
 };
 
 typedef struct FILE_TYPE
 {
-    static const U32 CONSOLE_NAME_LENGTH = 16;
-    typedef char CONSOLE_NAME;
-    typedef FILE* CONSOLE_FILE;
-    typedef char FILE_PATH;
-    typedef long FILE_SIZE;
+	FILE* CONSOLE_FILE;
+    char CONSOLE_NAME;
+    char FILE_PATH;
+    long FILE_SIZE;
 
 } FILE_TYPE;
 
@@ -68,11 +68,11 @@ typedef struct FILE_TYPE
 
 typedef struct BIT
 {
-	typedef U32 BYTE_TO_INT;
-	typedef U32 WORD_TO_INT();
-	typedef U32 CHECKSUM_HEADER();
-	typedef U32 CONSOLE_HEADER();
-	typedef U32 (*RETURN_BIT_SUM)();
+	U32 BYTE_TO_INT;
+	U32 WORD_TO_INT;
+	U32 CHECKSUM_HEADER;
+	U32 CONSOLE_HEADER[0];
+	U32 RETURN_BIT_SUM;
 };
 
 #endif
@@ -84,10 +84,10 @@ typedef struct BIT
 
 typedef struct ERROR
 {
-	typedef U32(*VERIFY_CONSOLE_ERR)(void);
-	typedef U32(*OPEN_FILE_ERR)(void);
-	typedef U32(*WRITE_ERR)(void);
-	typedef U32(*CHECKSUM_ERR)(void);
+	U32(*VERIFY_CONSOLE_ERR)(void);
+	U32(*OPEN_FILE_ERR)(void);
+	U32(*WRITE_ERR)(void);
+	U32(*CHECKSUM_ERR)(void);
 };
 
 #endif
