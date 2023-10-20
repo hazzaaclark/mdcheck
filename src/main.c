@@ -86,7 +86,8 @@ static int VERIFY_CONSOLE()
 {
     fseek(CHECKSUM->OPEN_FILE, 1, sizeof(BYTE_RANGE) + sizeof(SEEK_SET));
     fread(&BIT_TYPE->CONSOLE_HEADER, 1, sizeof(char), CHECKSUM->OPEN_FILE);
-    BIT_TYPE->CONSOLE_HEADER[15] = '\0';
+    
+    BIT_TYPE->CONSOLE_HEADER[15] = '\0'; // READS FROM 0 - 15 ON THE PC
 
     if (strcmp(CONSOLE, "SEGA Mega Drive") == 0 || strcmp(CONSOLE, "SEGA Genesis") == 0)
     {
