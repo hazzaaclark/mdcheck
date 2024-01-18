@@ -24,7 +24,7 @@ int COMPUTE_CHECKSUM()
     }
 
     CHECKSUM_ARGS.COMPUTE &= CHECK_MASK;
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 /* FIX THE CHECKSUM ASSUMING THAT THE READER OFFSET IS OUT OF PLACE */
@@ -74,7 +74,6 @@ int main(int argc, char* argv[])
     
     CHECKSUM_ARGS.FILE_NAME = malloc(strlen(argv[1]) + 1);
     strcpy(CHECKSUM_ARGS.FILE_NAME, argv[1]);
-
 
     COMPUTE_CHECKSUM();
 
