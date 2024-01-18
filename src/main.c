@@ -24,7 +24,7 @@ int COMPUTE_CHECKSUM()
     }
 
     CHECKSUM_ARGS.COMPUTE &= CHECK_MASK;
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /* FIX THE CHECKSUM ASSUMING THAT THE READER OFFSET IS OUT OF PLACE */
@@ -34,7 +34,7 @@ static
 void FIX_CHECKSUM(void)
 {
     fseek(CHECKSUM_ARGS.OPEN_FILE, CHECK_HANDLE_OFFSET, SEEK_SET);
-    fwrite(&(CHECKSUM_ARGS.COMPUTE), sizeof(CHECKSUM_ARGS.COMPUTE), 1, CHECKSUM_ARGS.OPEN_FILE);
+    fwrite((&CHECKSUM_ARGS.COMPUTE), sizeof(CHECKSUM_ARGS.COMPUTE), 1, CHECKSUM_ARGS.OPEN_FILE);
 }
 
 /* A FUNCTION TO MODULARISE THE CODE TO MAKE MAIN NOT AS CLUTTERED */
@@ -52,15 +52,29 @@ void PRINT_CHECKSUM(void)
 
 int main(int argc, char* argv[]) 
 {
+    fputs
+    (
+        "--------------------------------------\n"
+        "--------------------------------------\n"
+        "MEGA DRIVE CHECKSUM TOOL - Harry Clark\n"
+        "--------------------------------------\n"
+        "--------------------------------------\n"
+
+        ,stdout);
+
     /* READ THE CONTENTS OF THE FILE */
     /* RUN ERROR CHECKS TO DETERMINE IF THE FILE IS PROVIDED OR NOT */ 
 
     CHECKSUM_ARGS.OPEN_FILE = fopen(argv[1], "r+b");
     if (CHECKSUM_ARGS.OPEN_FILE == NULL) 
     {
-        printf("Could not open file %s\n", argv[1]);
-        return 1;
+        printf("Could not open file, please provide a path at the end of the execution\n", argv[1]);
+        return EXIT_FAILURE;
     }
+    
+    CHECKSUM_ARGS.FILE_NAME = malloc(strlen(argv[1]) + 1);
+    strcpy(CHECKSUM_ARGS.FILE_NAME, argv[1]);
+
 
     COMPUTE_CHECKSUM();
 
@@ -78,6 +92,7 @@ int main(int argc, char* argv[])
         printf("Checksum Computed!\n");
     }
 
+    free(CHECKSUM_ARGS.FILE_NAME);
     fclose(CHECKSUM_ARGS.OPEN_FILE);
-    return 0;
+    return EXIT_SUCCESS;
 }
