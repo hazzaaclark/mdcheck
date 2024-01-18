@@ -32,6 +32,7 @@
 
 typedef struct CHECKSUM
 {
+    char* FILE_NAME;
     U16 LENGTH;
 	U32 COMPUTE;
 	FILE* OPEN_FILE;
