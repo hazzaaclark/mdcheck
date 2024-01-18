@@ -1,178 +1,83 @@
-/* Copyright (C) 2023 Harry Clark */
+/* COPYRIGHT (C) HARRY CLARK 2024 */
 
-/* SEGA Mega Drive Checksum Tool */
+/* SEGA MEGA DRIVE CHECKSUM TOOLKIT */
 
-/* THIS FILE REFERS TO THE MAIN FUNCTIONALITY OF THE PROGRAM */
+/* THIS FILE PERTAINS TOWARDS THE MAINFUNCTIONALITY OF THE PROGRAM */
 
 /* NESTED INCLUDES */
 
 #include "util.h"
 
-#undef USE_HEX_ARGS
-
-static struct CHECKSUM* CHECKSUM;
-static struct FILE_TYPE* FILE_TYPE;
-static struct BIT* BIT_TYPE;
+CHECKSUM CHECKSUM_ARGS;
 
 /* COMPUTE THE CHECKSUM BY DETERMINING THE SOURCE OF THE FILE */
 /* THE ORIGIN IN WHICH THE OFFSET HEX VALUE EXISTS INSIDE OF
 /* THE BINARY OFFSET RELATIVE TO THE HANDLE */
 
-static int COMPUTE_CHECKSUM()
+static
+int COMPUTE_CHECKSUM()
 {
-    fseek(CHECKSUM->OPEN_FILE, 1, sizeof(CHECK_START_OFFSET + sizeof(SEEK_SET)));
-    fseek(CHECKSUM->OPEN_FILE, 1, sizeof(SEEK_END));
-
-    FILE_TYPE->FILE_SIZE += ftell(CHECKSUM->OPEN_FILE);
-
-    for (long OFFSET = CHECK_START_OFFSET; OFFSET <= FILE_TYPE->FILE_SIZE; OFFSET += NUM_BYTES)
+    fseek(CHECKSUM_ARGS.OPEN_FILE, CHECK_START_OFFSET, SEEK_SET);
+    while (fread(&CHECKSUM_ARGS.LENGTH, sizeof(CHECKSUM_ARGS.LENGTH), 1, CHECKSUM_ARGS.OPEN_FILE))
     {
-        malloc(sizeof(BIT_TYPE->WORD_TO_INT));
-        return;
+        CHECKSUM_ARGS.COMPUTE += CHECKSUM_ARGS.LENGTH;
     }
 
+    CHECKSUM_ARGS.COMPUTE &= CHECK_MASK;
     return 0;
 }
 
-#ifdef BIT_ARGS
+/* FIX THE CHECKSUM ASSUMING THAT THE READER OFFSET IS OUT OF PLACE */
+/* OR IF THE CURRENT CHECKSUM OF THE ROM DUMP DOESN'T MATCH */
 
-/* ACCESS THE FILE'S CONTENTS AND CONVERT THOSE BYTEWISE VALUES TO INTS */
-/* READY TO BE PARSED */
-
-/* CONVERT THE BYTES INTO INTS TO COMMUNICATE WITH THE CARTRIDGE'S VECTOR TABLE */
-
-/* SEE M68K VECTOR TABLE: https://wiki.neogeodev.org/index.php?title=68k_vector_table */
-
-static int BYTE_TO_INT()
+static
+void FIX_CHECKSUM(void)
 {
-    fseek(CHECKSUM->OPEN_FILE, CHECK_HANDLE_OFFSET, SEEK_SET);
-
-    //malloc(sizeof(BIT_TYPE->RETURN_BIT_SUM));
-    return;
+    fseek(CHECKSUM_ARGS.OPEN_FILE, CHECK_HANDLE_OFFSET, SEEK_SET);
+    fwrite(&(CHECKSUM_ARGS.COMPUTE), sizeof(CHECKSUM_ARGS.COMPUTE), 1, CHECKSUM_ARGS.OPEN_FILE);
 }
 
-/* IN ACCORDANCE WITH THE STATUS REGISTER ON THE M68K, THIS ALLOWS THE CARTRIDGE */
-/* TO COMMUNICATE WITH THE CONDITION CODES */
+/* A FUNCTION TO MODULARISE THE CODE TO MAKE MAIN NOT AS CLUTTERED */
+/* THIS IS FOR PRINTING THE FINAL AND FIXED CHECKSUM */
 
-/* TAKING INTO ACCOUNT MSB/LSB, WE DETERMINE THE HIGH AND LOW ORDER OF */
-/* THE BYTE ORIENTATION TO EQUATE 16 BITS (1 WORD) */
-
-/* SEE FIGURE 2-5: https://www.nxp.com/docs/en/reference-manual/MC68000UM.pdf#page=21 */
-
-#ifdef BIT_ARGS
-
-static int WORD_TO_INT()
+static
+void PRINT_CHECKSUM(void)
 {
-    calloc(1, sizeof(BIT_HI));
-    calloc(1, sizeof(BIT_LO));
-    calloc(1, sizeof(BIT_HI | BIT_LO));
-
-    malloc(sizeof(BIT_TYPE->RETURN_BIT_SUM));
-    return;
+    if(CHECKSUM_ARGS.READ == CHECKSUM_ARGS.COMPUTE)
+        printf("Checksum Correct\n");
+    else
+        FIX_CHECKSUM();
+        printf("Checksum Fixed\n");
 }
 
-#endif
-
-/* VERIFY WHICH CONSOLE THE .BIN OR .MD FILE REPRESENTS */
-/* THIS IS DETERMINED BY A STRING COMPARISON */
-
-/* WE DETERMINE THIS IN RELATION TO THE BYTE RANGE OF THE STATUS REGISTER */
-/* THAT GOVERNS THE VECTORS ESTABLISHED ON THE TABLE TO DETERMINE THE */
-/* CARTRIDGE REGION */
-
-/* THIS WILL ALLOW US TO READ LEA TO DETERMINE THE BITWISE LENGTH OF THE CONSOLE HEADER */
-
-static int VERIFY_CONSOLE()
+int main(int argc, char* argv[]) 
 {
-    fseek(CHECKSUM->OPEN_FILE, 1, sizeof(BYTE_RANGE) + sizeof(SEEK_SET));
-    fread(&BIT_TYPE->CONSOLE_HEADER, 1, sizeof(char), CHECKSUM->OPEN_FILE);
-    
-    BIT_TYPE->CONSOLE_HEADER[15] = '\0'; // READS FROM 0 - 15 ON THE PC
+    /* READ THE CONTENTS OF THE FILE */
+    /* RUN ERROR CHECKS TO DETERMINE IF THE FILE IS PROVIDED OR NOT */ 
 
-    if (strcmp(CONSOLE, "SEGA Mega Drive") == 0 || strcmp(CONSOLE, "SEGA Genesis") == 0)
+    CHECKSUM_ARGS.OPEN_FILE = fopen(argv[1], "r+b");
+    if (CHECKSUM_ARGS.OPEN_FILE == NULL) 
     {
-        return;
-    }
-
-    return 0;
-}
-static BIT::CHECKSUM_HEADER* READ_CHECKSUM_HEADER(CHECKSUM::OPEN_FILE* OF)
-{
-    fseek(*OF, CHECK_HANDLE_OFFSET, SEEK_SET);
-    return WORD_TO_INT(OF);
-}
-
-static CHECKSUM::WRITE* WRITE_CONTENTS(CHECKSUM::OPEN_FILE* OF)
-{
-    fseek(*OF, CHECK_HANDLE_OFFSET, SEEK_SET);
-    fputc(BIT_HI, *OF);
-    fputc(BIT_LO, *OF);
-    calloc(BIT_HI, CALCULATED_CHECKSUM >> 8 & 0xFF);
-    calloc(BIT_LO, CALCULATED_CHECKSUM & 0xFF);
-
-    RETURN_BIT_SUM();
-}
-
-static CHECKSUM::PRINT_SUM* PRINT_RESULT()
-{
-    printf("0x%0x4X", NULL, NULL);
-}
-
-static ERROR::OPEN_FILE_ERR* OPEN_ERROR(FILE_TYPE::CONSOLE_FILE* CONSOLE)
-{
-    if (CONSOLE == NULL)
-    {
-        printf("Failed to open file: %s\n");
-        return;
-    }
-    return 0;
-}
-
-static ERROR::VERIFY_CONSOLE_ERR* VERIFY_ERROR(FILE_TYPE::CONSOLE_FILE* CONSOLE)
-{
-    if (!VERIFY_CONSOLE)
-    {
-        #undef FILE_ERROR;
-        fclose(*CONSOLE);
-        return;
-    }
-
-    return 0;
-}
-
-static int RETURN_BIT_SUM()
-{
-    malloc(int*)(1, sizeof(BIT_HI | BIT_LO));
-    return;
-}
-
-#endif
-
-int main(int argc, char* argv[])
-{
-    if (argc != 2)
-    {
-        printf("Usage: %s <path>\n", argv[0]);
+        printf("Could not open file %s\n", argv[1]);
         return 1;
     }
 
-    CHECKSUM::OPEN_FILE* OF;
-    FILE_TYPE::CONSOLE_FILE* CF;
-    FILE_TYPE::FILE_PATH PATH;
+    COMPUTE_CHECKSUM();
 
-    if (OPEN_ERROR)
+    printf("Read Checksum\n", CHECKSUM_ARGS.READ);
+    printf("Found Checksum: %x\n", CHECKSUM_ARGS.COMPUTE);
+
+    if (CHECKSUM_ARGS.READ == CHECKSUM_ARGS.COMPUTE) 
     {
-        return 1;
+        printf("Checksum correct!\n");
     }
 
-    printf("Reading Checksum from file:\n");
-
-    if (VERIFY_ERROR)
+    else 
     {
-        return 1;
+        FIX_CHECKSUM();
+        printf("Checksum Computed!\n");
     }
 
+    fclose(CHECKSUM_ARGS.OPEN_FILE);
     return 0;
 }
-
-#endif
