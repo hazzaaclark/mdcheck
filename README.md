@@ -12,9 +12,9 @@ in the process of transmission of storage and parsing of data.
 
 # Demonstration:
 
-### Michael Jackson's Moonwalker (Rev A).md
+### Michael Jackson's Moonwalker (Rev A).bin
 
-![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/360b3750-74c1-4997-b8f0-3c65473c4692)
+![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/16506654-7d11-4e4c-b445-4c10fb7beaa6)
 
 # Buidling:
 
