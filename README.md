@@ -23,6 +23,11 @@ git clone this repository, change directory into the clone repo and compile from
 ``gcc main.c -o main``
 ``./main``
 
+build instructions have changed slightly.
+Rather than providing the ROM as an in-code parameter, you can now attach it onto the end of the execution
+
+``./main \PATH\TO\MD\ROM\ROM_NAME.bin``
+
 # Sources:
 
 [M68K Vector Table](https://wiki.neogeodev.org/index.php?title=68k_vector_table)
