@@ -14,7 +14,12 @@ in the process of transmission of storage and parsing of data.
 
 ### Michael Jackson's Moonwalker (Rev A).bin
 
-![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/16506654-7d11-4e4c-b445-4c10fb7beaa6)
+![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/7fad2dce-6893-4ea2-9095-ea7fbafc3ec0)
+
+### Sonic the Hedgehog (USA, Europe)
+
+![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/4b584cd8-998d-440e-a4d2-cfa121303d76)
+
 
 # Buidling:
 
