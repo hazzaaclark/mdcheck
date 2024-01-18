@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     COMPUTE_CHECKSUM();
 
     printf("Read Checksum\n", CHECKSUM_ARGS.READ);
-    printf("Found Checksum: %x\n", CHECKSUM_ARGS.COMPUTE);
+    printf("Found Checksum: 0x%x\n", CHECKSUM_ARGS.COMPUTE);
 
     if (CHECKSUM_ARGS.READ == CHECKSUM_ARGS.COMPUTE) 
     {
