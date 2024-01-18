@@ -33,6 +33,8 @@ Rather than providing the ROM as an in-code parameter, you can now attach it ont
 
 ``./main \PATH\TO\MD\ROM\ROM_NAME.bin``
 
+- see above image for guidance on the formatting
+
 # Sources:
 
 [M68K Vector Table](https://wiki.neogeodev.org/index.php?title=68k_vector_table)
