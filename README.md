@@ -16,7 +16,7 @@ in the process of transmission of storage and parsing of data.
 
 ![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/7fad2dce-6893-4ea2-9095-ea7fbafc3ec0)
 
-### Sonic the Hedgehog (USA, Europe)
+### Sonic the Hedgehog (USA, Europe).bin
 
 ![image](https://github.com/hazzaaclark/mdcheck/assets/107435091/4b584cd8-998d-440e-a4d2-cfa121303d76)
 
