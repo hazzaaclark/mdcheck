@@ -25,7 +25,12 @@ in the process of transmission of storage and parsing of data.
 
 git clone this repository, change directory into the clone repo and compile from source:
 
-``gcc main.c -o main``
+``git clone https://github.com/hazzaaclark/mdcheck.git``
+
+``cd mdcheck``
+
+``make``
+
 ``./main``
 
 build instructions have changed slightly.
