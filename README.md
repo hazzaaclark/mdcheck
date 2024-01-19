@@ -31,8 +31,6 @@ git clone this repository, change directory into the clone repo and compile from
 
 ``make``
 
-``./main``
-
 build instructions have changed slightly.
 Rather than providing the ROM as an in-code parameter, you can now attach it onto the end of the execution
 
