@@ -10,46 +10,6 @@
 
 CHECKSUM CHECKSUM_ARGS;
 
-/* COMPUTE THE CHECKSUM BY DETERMINING THE SOURCE OF THE FILE */
-/* THE ORIGIN IN WHICH THE OFFSET HEX VALUE EXISTS INSIDE OF
-/* THE BINARY OFFSET RELATIVE TO THE HANDLE */
-
-static
-int COMPUTE_CHECKSUM()
-{
-    fseek(CHECKSUM_ARGS.OPEN_FILE, CHECK_START_OFFSET, SEEK_SET);
-    while (fread(&CHECKSUM_ARGS.LENGTH, sizeof(CHECKSUM_ARGS.LENGTH), 1, CHECKSUM_ARGS.OPEN_FILE))
-    {
-        CHECKSUM_ARGS.COMPUTE += CHECKSUM_ARGS.LENGTH;
-    }
-
-    CHECKSUM_ARGS.COMPUTE &= CHECK_MASK;
-    return 0;
-}
-
-/* FIX THE CHECKSUM ASSUMING THAT THE READER OFFSET IS OUT OF PLACE */
-/* OR IF THE CURRENT CHECKSUM OF THE ROM DUMP DOESN'T MATCH */
-
-static
-void FIX_CHECKSUM(void)
-{
-    fseek(CHECKSUM_ARGS.OPEN_FILE, CHECK_HANDLE_OFFSET, SEEK_SET);
-    fwrite((&CHECKSUM_ARGS.COMPUTE), sizeof(CHECKSUM_ARGS.COMPUTE), 1, CHECKSUM_ARGS.OPEN_FILE);
-}
-
-/* A FUNCTION TO MODULARISE THE CODE TO MAKE MAIN NOT AS CLUTTERED */
-/* THIS IS FOR PRINTING THE FINAL AND FIXED CHECKSUM */
-
-static
-void PRINT_CHECKSUM(void)
-{
-    if(CHECKSUM_ARGS.READ == CHECKSUM_ARGS.COMPUTE)
-        printf("Checksum Correct\n");
-    else
-        FIX_CHECKSUM();
-        printf("Checksum Fixed\n");
-}
-
 int main(int argc, char* argv[]) 
 {
     fputs
@@ -71,13 +31,20 @@ int main(int argc, char* argv[])
         printf("Could not open file, please provide a path at the end of the execution\n", argv[1]);
         return EXIT_FAILURE;
     }
+
+    if(!IS_VALID_ROM())
+    {
+        printf("Not a valid SEGA Mega Drive/Genssis Rom \n");
+        fclose(CHECKSUM_ARGS.OPEN_FILE);
+        return EXIT_FAILURE;
+    }
     
     CHECKSUM_ARGS.FILE_NAME = malloc(strlen(argv[1]) + 1);
     strcpy(CHECKSUM_ARGS.FILE_NAME, argv[1]);
 
     COMPUTE_CHECKSUM();
 
-    printf("Read Checksum\n", CHECKSUM_ARGS.READ);
+    printf("Reading Checksum...\n", CHECKSUM_ARGS.READ);
     printf("Found Checksum: 0x%x\n", CHECKSUM_ARGS.COMPUTE);
 
     if (CHECKSUM_ARGS.READ == CHECKSUM_ARGS.COMPUTE) 
