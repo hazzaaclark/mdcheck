@@ -43,7 +43,7 @@ void PRINT_CHECKSUM(void)
 }
 
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
     fputs
     (
@@ -58,12 +58,12 @@ int main(int argc, char* argv[])
     /* RUN ERROR CHECKS TO DETERMINE IF THE FILE IS PROVIDED OR NOT */
 
     CHECKSUM_ARGS.OPEN_FILE = fopen(argv[1], "r+b");
-    if (CHECKSUM_ARGS.OPEN_FILE == NULL) 
+    if (CHECKSUM_ARGS.OPEN_FILE == NULL)
     {
         printf("Could not open file, please provide a path at the end of the execution\n", argv[1]);
         return EXIT_FAILURE;
     }
-    
+
     CHECKSUM_ARGS.FILE_NAME = malloc(strlen(argv[1]) + 1);
     strcpy(CHECKSUM_ARGS.FILE_NAME, argv[1]);
 
@@ -73,11 +73,11 @@ int main(int argc, char* argv[])
     printf("Read Checksum\n", CHECKSUM_ARGS.READ);
     printf("Found Checksum: 0x%x\n", CHECKSUM_ARGS.COMPUTE);
 
-    if (CHECKSUM_ARGS.READ == CHECKSUM_ARGS.COMPUTE) 
+    if (CHECKSUM_ARGS.READ == CHECKSUM_ARGS.COMPUTE)
     {
         printf("Checksum correct!\n");
     }
-    else 
+    else
     {
         FIX_CHECKSUM();
         printf("Checksum Computed!\n");
