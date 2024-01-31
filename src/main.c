@@ -42,6 +42,26 @@ void PRINT_CHECKSUM(void)
         printf("Checksum Fixed\n");
 }
 
+bool IS_ROM_VALID(FILE* rom)
+{
+    char *name = (char*)malloc(CONSOLE_NAME_LENGTH+1);
+
+    fseek(rom, SYSTEM_TYPE_OFFSET, SEEK_SET);
+    fread(name, CONSOLE_NAME_LENGTH, 1, rom);
+    name[CONSOLE_NAME_LENGTH] = '\0';
+
+    /* Only the SEGA name matters in checking if a ROM is valid */
+    char expected[] = "SEGA";
+    for (size_t i = 0; i < sizeof(expected) - 1; i++) {
+        if (name[i] != expected[i]) {
+            free(name);
+            return false;
+        }
+    }
+
+    free(name);
+    return true;
+}
 
 int main(int argc, char* argv[])
 {
@@ -67,6 +87,11 @@ int main(int argc, char* argv[])
     CHECKSUM_ARGS.FILE_NAME = malloc(strlen(argv[1]) + 1);
     strcpy(CHECKSUM_ARGS.FILE_NAME, argv[1]);
 
+    if (!IS_ROM_VALID(CHECKSUM_ARGS.OPEN_FILE))
+    {
+        printf("Invalid or corrupt rom\n");
+        return EXIT_FAILURE;
+    }
 
     COMPUTE_CHECKSUM();
 
