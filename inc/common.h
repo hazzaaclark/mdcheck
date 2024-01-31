@@ -21,7 +21,7 @@ typedef uint16_t U16;
 typedef uint32_t U32;
 typedef uint64_t U64;
 
-#endif 
+#endif
 
 #ifndef SIGNED_TYPES
 #define SIGNED_TYPES
@@ -31,7 +31,7 @@ typedef int16_t S16;
 typedef int32_t S32;
 typedef int64_t S64;
 
-#endif 
+#endif
 
 #ifndef UNKNOWN_TYPES
 #define UNKNOWN_TYPES
@@ -45,7 +45,7 @@ typedef unsigned long UNK_;
 #endif
 
 #ifndef FLOATING_POINT
-#define FLOATING_POINT 
+#define FLOATING_POINT
 
 typedef float F32;
 typedef double F64;
@@ -57,7 +57,7 @@ typedef volatile F64 VF64;
 #ifndef FUNCTIONS
 #define FUNCTIONS
 
-#define VOID_FUNCTION(NAME) void NAME() 
+#define VOID_FUNCTION(NAME) void NAME()
 
 #endif
 

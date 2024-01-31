@@ -26,6 +26,7 @@
 #define SUM_LENGTH                                1
 #define HEADER_CHECKSUM                           0
 #define CONSOLE_NAME_LENGTH 					 16
+#define SYSTEM_TYPE_OFFSET                    0x100
 
 #define     EXIT_SUCCESS                          0
 #define     EXIT_FAILURE                          1
