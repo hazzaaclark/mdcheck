@@ -42,24 +42,27 @@ void PRINT_CHECKSUM(void)
         printf("Checksum Fixed\n");
 }
 
-bool IS_ROM_VALID(FILE* rom)
+bool IS_ROM_VALID(FILE* ROM)
 {
-    char *name = (char*)malloc(CONSOLE_NAME_LENGTH+1);
+    char* CONSOLE_NAME = (char*)malloc(CONSOLE_NAME_LENGTH+1);
 
-    fseek(rom, SYSTEM_TYPE_OFFSET, SEEK_SET);
-    fread(name, CONSOLE_NAME_LENGTH, 1, rom);
-    name[CONSOLE_NAME_LENGTH] = '\0';
+    fseek(ROM, SYSTEM_TYPE_OFFSET, SEEK_SET);
+    fread(CONSOLE_NAME, CONSOLE_NAME_LENGTH, 1, ROM);
+    CONSOLE_NAME[CONSOLE_NAME_LENGTH] = '\0';
 
     /* Only the SEGA name matters in checking if a ROM is valid */
-    char expected[] = "SEGA";
-    for (size_t i = 0; i < sizeof(expected) - 1; i++) {
-        if (name[i] != expected[i]) {
-            free(name);
+    char EXPECETED_SIG[] = "SEGA";
+    
+    for (UNK i = 0; i < sizeof(EXPECTED_SIG) - 1; i++) 
+    {
+        if (CONSOLE_NAME[i] != EXPECTED_SIG[i]) 
+        {
+            free(CONSOLE_NAME);
             return false;
         }
     }
 
-    free(name);
+    free(CONSOLE_NAME);
     return true;
 }
 
