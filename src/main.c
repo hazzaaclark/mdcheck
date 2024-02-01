@@ -53,7 +53,7 @@ bool IS_ROM_VALID(FILE* ROM)
     /* Only the SEGA name matters in checking if a ROM is valid */
     char EXPECETED_SIG[] = "SEGA";
     
-    for (UNK i = 0; i < sizeof(EXPECTED_SIG) - 1; i++) 
+    for (UNK_ i = 0; i < sizeof(EXPECTED_SIG) - 1; i++) 
     {
         if (CONSOLE_NAME[i] != EXPECTED_SIG[i]) 
         {
