@@ -41,3 +41,5 @@ Rather than providing the ROM as an in-code parameter, you can now attach it ont
 # Sources:
 
 [M68K Vector Table](https://wiki.neogeodev.org/index.php?title=68k_vector_table)
+
+[ROM Header Ref.](https://plutiedev.com/rom-header#system)
